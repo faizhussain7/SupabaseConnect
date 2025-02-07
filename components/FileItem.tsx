@@ -11,7 +11,7 @@ import {
   Platform,
 } from "react-native";
 import { supabase } from "../config/initSupabase";
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import * as Sharing from "expo-sharing";
 import React from "react";
@@ -155,7 +155,7 @@ const FileItem = ({
 
   const downloadFile = async () => {
     if (!fileUrl) {
-      setError("File URL is missing");
+      setError("Unable to process file.");
       return;
     }
     try {
@@ -247,7 +247,7 @@ const FileItem = ({
           "Sharing Not Available",
           "Sharing is not supported on this device."
         );
-      if (!fileUrl) return setError("File URL is missing");
+      if (!fileUrl) return setError("Unable to process file.");
       const dirs = RNFetchBlob.fs.dirs;
       const filePath = `${
         Platform.OS === "ios" ? dirs.DocumentDir : dirs.DownloadDir
@@ -307,6 +307,7 @@ const FileItem = ({
                 style={{
                   width: imageSize.width / 2,
                   height: imageSize.height / 2,
+                  alignSelf: "center",
                 }}
                 resizeMode="cover"
               />
@@ -422,7 +423,7 @@ const FileItem = ({
     );
   };
 
-  return <View className="m-4 w-[90%]">{renderFileContent()}</View>;
+  return <View className="m-2">{renderFileContent()}</View>;
 };
 
 export default FileItem;

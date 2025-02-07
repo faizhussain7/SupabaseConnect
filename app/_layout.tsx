@@ -2,10 +2,11 @@ import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 import { AuthProvider, useAuth } from "@/provider/AuthProvider";
 import "../global.css";
-import { StatusBar, View } from "react-native";
+import { View } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import Spinner from "react-native-loading-spinner-overlay";
+import React from "react";
 
-// Makes sure the user is authenticated before accessing protected pages
 const InitialLayout = () => {
   const { session, initialized } = useAuth();
   const segments = useSegments();
@@ -26,42 +27,46 @@ const InitialLayout = () => {
   if (!initialized) {
     return (
       <View className="flex-1 justify-center items-center bg-gray-900">
+        <StatusBar style="light" />
         <Spinner visible animation="slide" size="large" />
       </View>
     );
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: "#111827",
-        },
-        headerTintColor: "#ffffff",
-      }}
-    >
-      <Stack.Screen
-        name="index" // Main or login screen
-        options={{ title: "Login", headerShown: false }}
-      />
-      <Stack.Screen
-        name="register"
-        options={{
-          title: "Create an Account",
-          presentation: "modal",
-          headerShown: true,
+    <>
+      <StatusBar style="light" />
+      <Stack
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: "#111827",
+          },
+          headerTintColor: "#ffffff",
         }}
-      />
-      <Stack.Screen
-        name="verification"
-        options={{
-          title: "Verify Email",
-          presentation: "modal",
-          headerShown: true,
-        }}
-      />
-      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-    </Stack>
+      >
+        <Stack.Screen
+          name="index"
+          options={{ title: "Login", headerShown: false }}
+        />
+        <Stack.Screen
+          name="register"
+          options={{
+            title: "Create an Account",
+            presentation: "modal",
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="verification"
+          options={{
+            title: "Verify Email",
+            presentation: "modal",
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      </Stack>
+    </>
   );
 };
 

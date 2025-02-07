@@ -160,6 +160,7 @@ const Home = () => {
         return true;
       } else if (isOverlayVisible.value) {
         isOverlayVisible.value = false;
+        setSelectedImage(null);
         return true;
       }
       return false;
@@ -440,7 +441,7 @@ const Home = () => {
           <Text className="text-red-500 mr-2">
             {retryCount > 0
               ? `Retrying... (Attempt ${retryCount}/${MAX_RETRIES})`
-              : "No Internet Connection"}
+              : "You're Offline. Please check your internet connection."}
           </Text>
           <ActivityIndicator size="small" color="#ef4444" />
         </View>

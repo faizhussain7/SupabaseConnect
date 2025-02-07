@@ -5,8 +5,9 @@ import {
   TextInput,
   Text,
   Pressable,
+  Keyboard,
 } from "react-native";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import React from "react";
 import Spinner from "react-native-loading-spinner-overlay";
 import { supabase } from "../config/initSupabase";
@@ -103,18 +104,26 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { top } = useSafeAreaInsets();
+  const emailRef = useRef<TextInput>(null);
+  const passwordRef = useRef<TextInput>(null);
 
-  // Sign in with email and password
   const onSignInPress = async () => {
     setLoading(true);
-
+    Keyboard.dismiss();
     const { error } = await supabase.auth.signInWithPassword({
       email: email.trim(),
       password: password.trim(),
     });
-
     if (error) Alert.alert(error.message);
     setLoading(false);
+  };
+
+  const handleSubmit = () => {
+    if (!email || !password) {
+      Alert.alert("Please fill in all fields");
+      return;
+    }
+    onSignInPress();
   };
 
   return (
@@ -133,6 +142,7 @@ const Login = () => {
         </Text>
 
         <TextInput
+          ref={emailRef}
           autoCapitalize="none"
           placeholder="Email Address"
           placeholderTextColor="#a9a9a9"
@@ -143,8 +153,12 @@ const Login = () => {
           accessibilityRole="text"
           inputMode="email"
           className="my-2 h-14 border border-green-700 rounded-lg p-4 text-white bg-gray-800 w-4/5"
+          returnKeyType="next"
+          onSubmitEditing={() => passwordRef.current?.focus()}
+          blurOnSubmit={false}
         />
         <TextInput
+          ref={passwordRef}
           placeholder="Password"
           placeholderTextColor="#a9a9a9"
           value={password}
@@ -154,10 +168,12 @@ const Login = () => {
           accessibilityHint="Enter your password"
           accessibilityRole="text"
           className="my-2 h-14 border border-green-700 rounded-lg p-4 text-white bg-gray-800 w-4/5"
+          returnKeyType="done"
+          onSubmitEditing={handleSubmit}
         />
 
         <Pressable
-          onPress={onSignInPress}
+          onPress={handleSubmit}
           android_ripple={{ color: "#ffffff50" }}
           accessibilityLabel="Sign In"
           accessibilityHint="Sign in to your account"
