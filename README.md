@@ -45,7 +45,7 @@
 
 ### Try the App
 
-You can [**download the APK here**](https://drive.google.com/file/d/1fPGwmALUbdak2m7VzNbveo-acSPww_4j/view?usp=sharing) to test and explore the app on your Android device.
+You can [**download the APK here**](https://drive.google.com/file/d/1iR9iaj7AjOslkaNEeHPhTZuWcxg08NvK/view?usp=sharing) to test and explore the app on your Android device.
 
 ---
 
