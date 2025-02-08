@@ -64,6 +64,7 @@ SupabaseConnect is built with a robust and modern tech stack to ensure a smooth 
 - **Deep Linking**: [Expo Linking](https://docs.expo.dev/versions/latest/sdk/linking/)
 - **Sharing**: [Expo Sharing](https://docs.expo.dev/versions/latest/sdk/sharing/)
 - **Loading Indicators**: [react-native-loading-spinner-overlay](https://www.npmjs.com/package/react-native-loading-spinner-overlay)
+- **Masonry Layout**: [shopify/flash-list](https://shopify.github.io/flash-list/docs/guides/masonry/)
 
 ---
 
