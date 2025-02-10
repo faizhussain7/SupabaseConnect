@@ -25,6 +25,7 @@ import Animated, {
   Easing,
   FadeIn,
   FadeOut,
+  runOnJS,
 } from "react-native-reanimated";
 import * as Haptics from "expo-haptics";
 import * as DocumentPicker from "expo-document-picker";
@@ -159,8 +160,7 @@ const Home = () => {
         isExpanded.value = false;
         return true;
       } else if (isOverlayVisible.value) {
-        isOverlayVisible.value = false;
-        setSelectedImage(null);
+        hideImage();
         return true;
       }
       return false;
@@ -418,12 +418,12 @@ const Home = () => {
   }));
 
   const overlayStyle = useAnimatedStyle(() => ({
-    opacity: withTiming(isOverlayVisible.value ? 1 : 0, { duration: 300 }),
+    opacity: withTiming(isOverlayVisible.value ? 1 : 0, { duration: 400 }),
     transform: [
       {
-        scale: isOverlayVisible.value
-          ? withSpring(1, { damping: 10, stiffness: 100 })
-          : withTiming(0.9, { duration: 300 }),
+        translateX: isOverlayVisible.value
+          ? withSpring(0, { damping: 10, stiffness: 100 })
+          : withTiming(-200, { duration: 300 }),
       },
     ],
     pointerEvents: isOverlayVisible.value ? "auto" : "none",
@@ -434,6 +434,11 @@ const Home = () => {
     isOverlayVisible.value = true;
   };
 
+  const hideImage = () => {
+    isOverlayVisible.value = false;
+    runOnJS(setSelectedImage)(null);
+  };
+
   return (
     <View className="bg-gray-900 flex-1">
       {!isConnected && (
@@ -441,7 +446,7 @@ const Home = () => {
           <Text className="text-red-500 mr-2">
             {retryCount > 0
               ? `Retrying... (Attempt ${retryCount}/${MAX_RETRIES})`
-              : "You're Offline. Please check your internet connection."}
+              : "You're Offline. Please check your internet connection"}
           </Text>
           <ActivityIndicator size="small" color="#ef4444" />
         </View>
@@ -525,13 +530,10 @@ const Home = () => {
 
           <Animated.View
             style={overlayStyle}
-            className="absolute top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,0.8)] flex justify-center items-center z-10"
+            className="absolute top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,0.6)] flex justify-center items-center z-10"
           >
             <AnimatedPressable
-              onPress={() => {
-                isOverlayVisible.value = false;
-                setSelectedImage(null);
-              }}
+              onPress={hideImage}
               android_ripple={{ color: AndroidRipple, borderless: false }}
               className="absolute top-5 right-5 p-2"
             >
